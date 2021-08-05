@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SbrfLibrary", "SbrfLibrary.csproj", "{91B8CF0D-BA07-427C-B279-0DF773C436F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91B8CF0D-BA07-427C-B279-0DF773C436F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B8CF0D-BA07-427C-B279-0DF773C436F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B8CF0D-BA07-427C-B279-0DF773C436F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B8CF0D-BA07-427C-B279-0DF773C436F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF35A983-0659-4037-B85B-8AF851867E7C}
+	EndGlobalSection
+EndGlobal
