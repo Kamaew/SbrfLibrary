@@ -20,6 +20,8 @@
 
 		public string CardType { get; set; }
 
+		public string TerminalNumber { get; set; }
+
 		public override string ToString() => string.Format("Success: {0}. Error code {1}, message: {2}. Check: {3}. RRN: {4}. Hash: {5}. Card: {6}", Success, ErrorCode, ErrorMessage ?? "", Cheque ?? "", RRN ?? "", Hash ?? "", Card ?? "");
 	}
 }

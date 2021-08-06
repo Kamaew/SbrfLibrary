@@ -1,9 +1,6 @@
 ﻿using SbrfLibrary.SBRFSRV;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Xml.Serialization;
 
 namespace SbrfLibrary
 {
@@ -62,7 +59,7 @@ namespace SbrfLibrary
                 server.SParam(SberbankParameters.Amount, (int)(amount * 100m));
 
                 int result = server.NFun((int)SberbankOperations.Pay);
-                
+
                 if (result == SberbankReturnCodes.Break)
                 {
                     res.RRN = server.GParamString(SberbankParameters.RRN);
@@ -83,6 +80,7 @@ namespace SbrfLibrary
                         LoyaltyIdentifier = server.GParamString(SberbankParameters.LoyaltyIdentifier)
                     };
                     res.ClientCard = infoResult.ClientCard;
+                    res.TerminalNumber = infoResult.TermNum;
                     res.CardType = infoResult.CardType;
                     res.Hash = infoResult.Hash;
                     res.Card = infoResult.Card;
@@ -91,19 +89,18 @@ namespace SbrfLibrary
                     return res;
                 }
 
-                _ = ReturnError(result, "Ошибка при оплате");
-
-                if (res.Hash == null || res.Card == null)
+                if (result != SberbankReturnCodes.OK)
                 {
-                    var hash = server.GParamString(SberbankParameters.Hash);
-                    var card = server.GParamString(SberbankParameters.ClientCard);
-                    res.Hash = hash;
-                    res.Card = card;
+                    return ReturnError(result, "Ошибка при оплате");
                 }
+                
 
                 res.Success = true;
+                res.Hash = server.GParamString(SberbankParameters.Hash);
+                res.Card = server.GParamString(SberbankParameters.ClientCard);
                 res.ErrorCode = SberbankReturnCodes.OK;
                 res.Cheque = server.GParamString(SberbankParameters.Cheque);
+                res.TerminalNumber = server.GParamString(SberbankParameters.TerminalNumber);
                 res.RRN = server.GParamString(SberbankParameters.RRN);
                 return res;
             }
@@ -138,8 +135,11 @@ namespace SbrfLibrary
             Result res = new Result
             {
                 Success = true,
-                Cheque = server.GParamString(SberbankParameters.Cheque)
+                Cheque = server.GParamString(SberbankParameters.Cheque),
+                Card = server.GParamString(SberbankParameters.ClientCard),
+                RRN = server.GParamString(SberbankParameters.RRN)
             };
+
             return res;
         }
     }
