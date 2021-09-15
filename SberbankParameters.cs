@@ -94,5 +94,9 @@
         /// Номер мерчанта
         /// </summary>
         public const string MerchNum = "MerchNum";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string AID = "AID";
     }
 }

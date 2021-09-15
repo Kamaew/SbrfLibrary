@@ -114,9 +114,10 @@ namespace SbrfLibrary
                     Success = true,
                     ErrorCode = SberbankReturnCodes.OK,
                     Cheque = server.GParamString(SberbankParameters.Cheque),
-                    RRN = server.GParamString(SberbankParameters.RRN)
+                    RRN = server.GParamString(SberbankParameters.RRN),
+                    AID = server.GParamString(SberbankParameters.AID)
                 };
-                infoResult.AID = "A0000000" + GetDataBySbrfCheque("A0000000", infoResult.Cheque);
+                infoResult.ParseAID = GetAIDByCheque(infoResult.Cheque);
                 return infoResult;
             }
             catch (Exception ex)
@@ -157,30 +158,17 @@ namespace SbrfLibrary
 
             return res;
         }
-        private static string GetDataBySbrfCheque(string reg, string sbrfCheque)
+        private static string GetAIDByCheque(string sbrfCheque)
         {
-            string value = "0";
-            try
+            var list = sbrfCheque.Replace("\r\n", " ").Split(' ');
+            for (int i = 0; i < list.Length; i++)
             {
-                if (string.IsNullOrWhiteSpace(sbrfCheque))
+                if (list[i].StartsWith("Карта"))
                 {
-                    return "0";
+                    return list[i - 1];
                 }
-
-                string pattern = reg + @"(\s*)(\d*)";
-                Match match = Regex.Match(sbrfCheque, pattern);
-
-                if (match != null)
-                {
-                    value = match.Groups[2].Value;
-                }
-
-                return value;
             }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return "";
         }
     }
 }

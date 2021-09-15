@@ -59,10 +59,15 @@
         /// </summary>
         public string MerchNum { get; internal set; }
         /// <summary>
-        /// Идентификатор приложения COMPLETE APPLICATION IDENTIFIERS (AID)
+        /// Application ID чиповой карты (в виде ASCIIZ-строки)
         /// https://www.eftlab.com/knowledge-base/211-emv-aid-rid-pix/
         /// </summary>
         public string AID { get; internal set; }
+        /// <summary>
+        /// AID Получаю путем парсинга Чека, так как из запроса AID отдает пустой
+        /// Сбербанк ответить не мог почему пустой
+        /// </summary>
+        public string ParseAID { get; internal set; }
 
     }
 }
