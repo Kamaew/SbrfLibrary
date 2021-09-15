@@ -1,27 +1,45 @@
 ﻿using SbrfLibrary.SBRFSRV;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace SbrfLibrary
 {
     public static class Sbrf
     {
         private static readonly Server server = (Server)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+        /// <summary>
+        /// Проведение сверки итогов
+        /// </summary>
+        /// <returns>Результат операции</returns>
         public static Result Check()
         {
             int result = server.NFun((int)SberbankOperations.Verification);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK() : ReturnError(result, "Ошибка при сверке");
         }
+        /// <summary>
+        /// Получение кратного отчета
+        /// </summary>
+        /// <returns>Результат</returns>
         public static Result ShortReport()
         {
             int result = server.NFun((int)SberbankOperations.ShortReport);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK() : ReturnError(result, "Ошибка при кратком отчете");
         }
+        /// <summary>
+        /// Получене полного отчета
+        /// </summary>
+        /// <returns>Результат операции</returns>
         public static Result Report()
         {
             int result = server.NFun((int)SberbankOperations.Report);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK() : ReturnError(result, "Ошибка при отчете");
         }
+        /// <summary>
+        /// Возврат чека
+        /// </summary>
+        /// <param name="sum">Сумма чека</param>
+        /// <returns>Результат операции</returns>
         public static Result ReturnPayment(decimal sum)
         {
             try
@@ -35,6 +53,11 @@ namespace SbrfLibrary
                 return ReturnException(ex);
             }
         }
+        /// <summary>
+        /// Отмена чека в текущей смене
+        /// </summary>
+        /// <param name="RRN">Номер ссылки</param>
+        /// <returns>Результат операции</returns>
         public static Result Void(string RRN)
         {
             try
@@ -50,59 +73,51 @@ namespace SbrfLibrary
                 return ReturnException(ex);
             }
         }
-
+        /// <summary>
+        /// Оплата чека
+        /// </summary>
+        /// <param name="amount">Сумма к оплате</param>
+        /// <returns>Результат операции</returns>
         public static Result Pay(decimal amount)
         {
-            Result res = new Result();
             try
             {
                 server.SParam(SberbankParameters.Amount, (int)(amount * 100m));
-
                 int result = server.NFun((int)SberbankOperations.Pay);
-
-                if (result == SberbankReturnCodes.Break)
-                {
-                    res.RRN = server.GParamString(SberbankParameters.RRN);
-                    InfoResult infoResult = new InfoResult
-                    {
-                        CardName = server.GParamString(SberbankParameters.CardName),
-                        CardType = server.GParamString(SberbankParameters.CardType),
-                        TrxDate = server.GParamString(SberbankParameters.TransactionDate),
-                        TrxTime = server.GParamString(SberbankParameters.TransactionTime),
-                        TermNum = server.GParamString(SberbankParameters.TerminalNumber),
-                        ClientCard = server.GParamString(SberbankParameters.ClientCard),
-                        ClientExpiryDate = server.GParamString(SberbankParameters.ClientExpiryDate),
-                        Hash = server.GParamString(SberbankParameters.Hash),
-                        OwnCard = server.GParamString(SberbankParameters.OwnCard),
-                        CardData = server.GParamString(SberbankParameters.CardData),
-                        CardLSData = server.GParamString(SberbankParameters.CardLSData),
-                        OutText = server.GParamString(SberbankParameters.OutText),
-                        LoyaltyIdentifier = server.GParamString(SberbankParameters.LoyaltyIdentifier)
-                    };
-                    res.ClientCard = infoResult.ClientCard;
-                    res.TerminalNumber = infoResult.TermNum;
-                    res.CardType = infoResult.CardType;
-                    res.Hash = infoResult.Hash;
-                    res.Card = infoResult.Card;
-                    res.Success = true;
-                    res.ErrorCode = result;
-                    return res;
-                }
 
                 if (result != SberbankReturnCodes.OK)
                 {
                     return ReturnError(result, "Ошибка при оплате");
                 }
-                
 
-                res.Success = true;
-                res.Hash = server.GParamString(SberbankParameters.Hash);
-                res.Card = server.GParamString(SberbankParameters.ClientCard);
-                res.ErrorCode = SberbankReturnCodes.OK;
-                res.Cheque = server.GParamString(SberbankParameters.Cheque);
-                res.TerminalNumber = server.GParamString(SberbankParameters.TerminalNumber);
-                res.RRN = server.GParamString(SberbankParameters.RRN);
-                return res;
+                InfoResult infoResult = new InfoResult
+                {
+                    CardName = server.GParamString(SberbankParameters.CardName),
+                    CardType = server.GParamString(SberbankParameters.CardType),
+                    TrxDate = server.GParamString(SberbankParameters.TransactionDate),
+                    TrxTime = server.GParamString(SberbankParameters.TransactionTime),
+                    TerminalNumber = server.GParamString(SberbankParameters.TerminalNumber),
+                    ClientCard = server.GParamString(SberbankParameters.ClientCard),
+                    ClientExpiryDate = server.GParamString(SberbankParameters.ClientExpiryDate),
+                    Hash = server.GParamString(SberbankParameters.Hash),
+                    OwnCard = server.GParamString(SberbankParameters.OwnCard),
+                    CardLSData = server.GParamString(SberbankParameters.CardLSData),
+                    OutText = server.GParamString(SberbankParameters.OutText),
+                    LoyaltyIdentifier = server.GParamString(SberbankParameters.LoyaltyIdentifier),
+                    AuthCode = server.GParamString(SberbankParameters.AuthCode),
+                    MerchantTSN = server.GParamString(SberbankParameters.MerchantTSN),
+                    MerchantBatchNum = server.GParamString(SberbankParameters.MerchantBatchNum),
+                    Amount = server.GParamString(SberbankParameters.Amount),
+                    AmountClear = server.GParamString(SberbankParameters.AmountClear),
+                    MerchNum = server.GParamString(SberbankParameters.MerchNum),
+
+                    Success = true,
+                    ErrorCode = SberbankReturnCodes.OK,
+                    Cheque = server.GParamString(SberbankParameters.Cheque),
+                    RRN = server.GParamString(SberbankParameters.RRN)
+                };
+                infoResult.AID = "A0000000" + GetDataBySbrfCheque("A0000000", infoResult.Cheque);
+                return infoResult;
             }
             catch (Exception ex)
             {
@@ -136,11 +151,36 @@ namespace SbrfLibrary
             {
                 Success = true,
                 Cheque = server.GParamString(SberbankParameters.Cheque),
-                Card = server.GParamString(SberbankParameters.ClientCard),
+                ClientCard = server.GParamString(SberbankParameters.ClientCard),
                 RRN = server.GParamString(SberbankParameters.RRN)
             };
 
             return res;
+        }
+        private static string GetDataBySbrfCheque(string reg, string sbrfCheque)
+        {
+            string value = "0";
+            try
+            {
+                if (string.IsNullOrWhiteSpace(sbrfCheque))
+                {
+                    return "0";
+                }
+
+                string pattern = reg + @"(\s*)(\d*)";
+                Match match = Regex.Match(sbrfCheque, pattern);
+
+                if (match != null)
+                {
+                    value = match.Groups[2].Value;
+                }
+
+                return value;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

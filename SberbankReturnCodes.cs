@@ -1,5 +1,8 @@
 ﻿namespace SbrfLibrary
 {
+    /// <summary>
+    /// Коды результата
+    /// </summary>
     public static class SberbankReturnCodes
     {
         public const int Break = 4353;

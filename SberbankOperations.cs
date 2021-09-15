@@ -1,5 +1,8 @@
 ﻿namespace SbrfLibrary
 {
+    /// <summary>
+    /// Функции операций
+    /// </summary>
     public enum SberbankOperations
     {
         ReadCard = 5002,
