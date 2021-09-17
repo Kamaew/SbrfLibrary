@@ -95,7 +95,7 @@
         /// </summary>
         public const string MerchNum = "MerchNum";
         /// <summary>
-        /// 
+        /// Application ID чиповой карты (в виде ASCIIZ-строки)
         /// </summary>
         public const string AID = "AID";
     }

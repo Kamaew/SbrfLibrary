@@ -1,4 +1,6 @@
-﻿namespace SbrfLibrary
+﻿using System.Xml.Linq;
+
+namespace SbrfLibrary
 {
     public class InfoResult : Result
     {
