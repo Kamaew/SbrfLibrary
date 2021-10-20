@@ -10,7 +10,7 @@ namespace SbrfLibrary.SBRFSRV
     [TypeIdentifier]
     public interface IServer
     {
-        [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall)]
+        [MethodImpl(MethodImplOptions.InternalCall )] //| MethodImplOptions.PreserveSig
         [DispId(1)]
         int NFun([In] int func);
 
