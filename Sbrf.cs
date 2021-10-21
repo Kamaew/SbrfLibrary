@@ -2,7 +2,6 @@
 using SBRFSRV;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 
 namespace SbrfLibrary
 {
@@ -13,7 +12,7 @@ namespace SbrfLibrary
         /// Проведение сверки итогов
         /// </summary>
         /// <returns>Результат операции</returns>
-        public static Result Check()
+        public static InfoResult Check()
         {
             int result = server.NFun((int)SberbankOperations.Verification);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK() : ReturnError(result, "Ошибка при сверке");
@@ -22,7 +21,7 @@ namespace SbrfLibrary
         /// Получение кратного отчета
         /// </summary>
         /// <returns>Результат</returns>
-        public static Result ShortReport()
+        public static InfoResult ShortReport()
         {
             int result = server.NFun((int)SberbankOperations.ShortReport);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK() : ReturnError(result, "Ошибка при кратком отчете");
@@ -31,7 +30,7 @@ namespace SbrfLibrary
         /// Получене полного отчета
         /// </summary>
         /// <returns>Результат операции</returns>
-        public static Result Report()
+        public static InfoResult Report()
         {
             int result = server.NFun((int)SberbankOperations.Report);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK() : ReturnError(result, "Ошибка при отчете");
@@ -41,7 +40,7 @@ namespace SbrfLibrary
         /// </summary>
         /// <param name="sum">Сумма чека</param>
         /// <returns>Результат операции</returns>
-        public static Result ReturnPayment(decimal sum)
+        public static InfoResult ReturnPayment(decimal sum)
         {
             try
             {
@@ -59,7 +58,7 @@ namespace SbrfLibrary
         /// </summary>
         /// <param name="RRN">Номер ссылки</param>
         /// <returns>Результат операции</returns>
-        public static Result Void(string RRN)
+        public static InfoResult Void(string RRN)
         {
             try
             {
@@ -79,7 +78,7 @@ namespace SbrfLibrary
         /// </summary>
         /// <param name="amount">Сумма к оплате</param>
         /// <returns>Результат операции</returns>
-        public static Result Pay(decimal amount)
+        public static InfoResult Pay(decimal amount)
         {
             try
             {
@@ -127,9 +126,9 @@ namespace SbrfLibrary
             }
         }
 
-        private static Result ReturnException(Exception ex)
+        private static InfoResult ReturnException(Exception ex)
         {
-            Result res = new Result
+            InfoResult res = new InfoResult
             {
                 Success = false,
                 ErrorMessage = ex.ToString(),
@@ -137,9 +136,9 @@ namespace SbrfLibrary
             };
             return res;
         }
-        private static Result ReturnError(int result, string message)
+        private static InfoResult ReturnError(int result, string message)
         {
-            Result res = new Result
+            InfoResult res = new InfoResult
             {
                 Success = false,
                 ErrorCode = result,
@@ -147,9 +146,9 @@ namespace SbrfLibrary
             };
             return res;
         }
-        private static Result ReturnOK()
+        private static InfoResult ReturnOK()
         {
-            Result res = new Result
+            InfoResult res = new InfoResult
             {
                 Success = true,
                 Cheque = server.GParamString(SberbankParameters.Cheque),
@@ -161,7 +160,7 @@ namespace SbrfLibrary
         }
         private static string GetAIDByCheque(string sbrfCheque)
         {
-            var list = sbrfCheque.Replace("\r\n", " ").Split(' ');
+            string[] list = sbrfCheque.Replace("\r\n", " ").Split(' ');
             for (int i = 0; i < list.Length; i++)
             {
                 if (list[i].StartsWith("Карта"))
