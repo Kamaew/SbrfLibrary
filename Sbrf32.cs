@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace SbrfLibrary
 {
-    internal static class Sbrf31
+    internal static class Sbrf32
     {
-        private static readonly Server31 server = (Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+        private static readonly Server32 server = (Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
         /// <summary>
         /// Проведение сверки итогов
         /// </summary>
@@ -169,6 +169,5 @@ namespace SbrfLibrary
             }
             return "";
         }
-
     }
 }
