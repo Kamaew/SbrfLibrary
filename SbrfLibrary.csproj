@@ -50,10 +50,10 @@
     <Compile Include="SberbankOperations.cs" />
     <Compile Include="SberbankParameters.cs" />
     <Compile Include="SberbankReturnCodes.cs" />
+    <Compile Include="Sbrf31.cs" />
     <Compile Include="Sbrf32.cs" />
-    <Compile Include="Sbrf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SbrfManager.cs" />
+    <Compile Include="Sbrf.cs" />
     <Compile Include="SBRFSRV\IServer32.cs" />
     <Compile Include="SBRFSRV\IServer31.cs" />
     <Compile Include="SBRFSRV\Server32.cs" />

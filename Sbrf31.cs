@@ -4,16 +4,16 @@ using System.Runtime.InteropServices;
 
 namespace SbrfLibrary
 {
-    internal static class Sbrf32
+    internal static class Sbrf31
     {
-        public static Server32 _server;
+        public static Server31 _server;
         /// <summary>
         /// Проведение сверки итогов
         /// </summary>
         /// <returns>Результат операции</returns>
         public static InfoResult Check()
         {
-            Server32 server = (Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+            Server31 server = (Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
             int result = server.NFun((int)SberbankOperations.Verification);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK(server) : ReturnError(result, "Ошибка при сверке");
         }
@@ -23,7 +23,7 @@ namespace SbrfLibrary
         /// <returns>Результат</returns>
         public static InfoResult ShortReport()
         {
-            Server32 server = (Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+            Server31 server = (Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
             int result = server.NFun((int)SberbankOperations.ShortReport);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK(server) : ReturnError(result, "Ошибка при кратком отчете");
         }
@@ -33,7 +33,7 @@ namespace SbrfLibrary
         /// <returns>Результат операции</returns>
         public static InfoResult Report()
         {
-            Server32 server = (Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+            Server31 server = (Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
             int result = server.NFun((int)SberbankOperations.Report);
             return result.Equals(SberbankReturnCodes.OK) ? ReturnOK(server) : ReturnError(result, "Ошибка при отчете");
         }
@@ -46,7 +46,7 @@ namespace SbrfLibrary
         {
             try
             {
-                Server32 server = (Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+                Server31 server = (Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
                 server.SParam(SberbankParameters.Amount, (int)(sum * 100m));
                 int result = server.NFun((int)SberbankOperations.ReturnPayment);
                 return result.Equals(SberbankReturnCodes.OK) ? ReturnOK(server) : ReturnError(result, "Ошибка при возврате");
@@ -65,7 +65,7 @@ namespace SbrfLibrary
         {
             try
             {
-                Server32 server = (Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
+                Server31 server = (Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF")));
                 server.SParam(SberbankParameters.Amount, 0);
                 server.SParam(SberbankParameters.RRN, RRN);
                 server.SParam(SberbankParameters.Track2, "QSELECT");
@@ -86,7 +86,7 @@ namespace SbrfLibrary
         {
             try
             {
-                Server32 server = ((Server32)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF"))));
+                Server31 server = ((Server31)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("2DB7F353-0A33-4263-AACE-1CEA09D8C0EF"))));
                 server.SParam(SberbankParameters.Amount, (int)(amount * 100m));
                 int result = server.NFun((int)SberbankOperations.Pay);
 
@@ -152,7 +152,7 @@ namespace SbrfLibrary
             };
             return res;
         }
-        private static InfoResult ReturnOK(Server32 server)
+        private static InfoResult ReturnOK(Server31 server)
         {
             InfoResult res = new InfoResult
             {

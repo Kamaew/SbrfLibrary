@@ -70,6 +70,11 @@ namespace SbrfLibrary
         /// Сбербанк ответить не мог почему пустой
         /// </summary>
         public string ParseAID { get; internal set; }
+        /// <summary>
+        /// Рядом со словом Карта есть (E4)/(E)/(E1)  Получаю путем парсинга Чека, так как из запроса не получить
+        /// </summary>
+        public string SymbolE { get; internal set; }
+        
 
     }
 }
